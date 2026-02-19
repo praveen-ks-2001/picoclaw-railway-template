@@ -1,75 +1,132 @@
-# PicoClaw Railway Template (1-click deploy)
+![PicoClaw](https://raw.githubusercontent.com/sipeed/picoclaw/main/assets/logo.jpg)
 
-This repo packages **PicoClaw** for Railway with a web-based configuration UI and gateway management dashboard.
 
-## What you get
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/picoclaw-or-lightweight-alternative-of-o?referralCode=QXdhdr&utm_medium=integration&utm_source=template&utm_campaign=generic)
 
-- **PicoClaw Gateway** managed as a subprocess with auto-restart
-- A web **Configuration UI** at `/` (protected by Basic Auth) for editing providers, channels, agent defaults, and tools
-- A **Status Dashboard** with live gateway state, provider/channel status, cron jobs, and real-time logs
-- Persistent state via **Railway Volume** (config, workspace, sessions, and cron survive redeploys)
+# Deploy and Host PicoClaw | Lightweight Alternative of OpenClaw | Self Host on Railway
 
-## How it works
+**Picoclaw** is a lightweight, open-source AI agent backend. Think of it as a simpler, more minimal alternative to OpenClaw. You host it yourself, connect a model provider, plug in a messaging channel, and your AI agent is live.
 
-- The container builds PicoClaw from source and runs a Python web server alongside it
-- The web server provides a configuration editor that reads/writes `~/.picoclaw/config.json` directly
-- On startup, if any provider API key is configured, the gateway starts automatically
-- The gateway subprocess output is captured into a 500-line log buffer viewable from the Status tab
+No heavy UI. No complex setup. Just a clean backend that does the job.
 
-## Environment variables
+## What is PicoClaw? 🤖
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `ADMIN_USERNAME` | `admin` | Username for Basic Auth |
-| `ADMIN_PASSWORD` | *(auto-generated)* | Password for Basic Auth. **Check deploy logs for the generated password if not set.** |
-| `PICOCLAW_VERSION` | `main` | Git branch/tag to build PicoClaw from |
+Picoclaw is a small AI agent framework built for developers who want control. It connects to language model providers (like OpenAI), runs agent logic, and sends responses through channels such as Telegram or Discord.
 
-## Getting chat tokens
+It’s backend-first.
+You bring the model.
+You bring the channel.
+Picoclaw connects everything together.
 
-### Telegram bot token
 
-1. Open Telegram and message **@BotFather**
-2. Run `/newbot` and follow the prompts
-3. BotFather will give you a token like: `123456789:AA...`
-4. Paste it into the Telegram channel config and add your user ID to the allow list
+## Setup Guide (4 Simple Steps) 🛠️
 
-### Discord bot token
+**1️⃣ Deploy**
+Click the deploy button and create your Railway project. Then click on the link provided by railway and login using credentials present in Environment Variables.
 
-1. Go to the [Discord Developer Portal](https://discord.com/developers/applications)
-2. **New Application** → pick a name
-3. Open the **Bot** tab → **Add Bot**
-4. Enable **MESSAGE CONTENT INTENT** under Privileged Gateway Intents
-5. Copy the **Bot Token** and paste it into the Discord channel config
-6. Invite the bot to your server (OAuth2 URL Generator → scopes: `bot`, `applications.commands`)
+**2️⃣ Add a Provider**
+Connect a language model provider (e.g., OpenAI) using your API key.
 
-## Local testing
+**3️⃣ Add a Channel**
+Picoclaw does not include a built-in chat UI.
+You must connect a channel like Telegram or Discord to send and receive messages.
 
-```bash
-docker build -t picoclaw-railway-template .
+Once both provider and channel are active, your agent is ready.
 
-docker run --rm -p 8080:8080 \
-  -e PORT=8080 \
-  -e ADMIN_PASSWORD=test \
-  -v $(pwd)/.tmpdata:/data \
-  picoclaw-railway-template
 
-# Open http://localhost:8080 (username: admin, password: test)
-```
+## About Hosting PicoClaw | Lightweight Alternative of OpenClaw | Self Host
 
-## FAQ
+Hosting Picoclaw on Railway is straightforward.
 
-**Q: How do I access the configuration page?**
+You deploy the repo.
+Add a provider API key.
+Connect at least one messaging channel.
 
-A: Go to your deployed instance's URL. When prompted for credentials, use `admin` as the username and the `ADMIN_PASSWORD` from your Railway Variables as the password.
+Railway builds the project automatically and gives you a public URL. It handles uptime and infrastructure. You don’t need to manage servers or Docker manually.
 
-**Q: Where do I find the auto-generated password?**
+The only real work is configuring your provider and channel correctly. Once that’s done, the agent runs continuously in the background.
 
-A: Check the deploy logs in Railway. The password is printed at startup: `Generated admin password: ...`
+## Common Use Cases of PicoClaw
 
-**Q: How do I change the AI model?**
+* Run a self-hosted AI assistant
+* Build Telegram or Discord AI bots
+* Power internal automation workflows
+* Experiment with custom agent logic
+* Create AI tools without relying on SaaS platforms
 
-A: Go to the Configuration tab → Agent Defaults → Model field. Set it to `provider/model-name` format (e.g., `anthropic/claude-opus-4-5`, `openai/gpt-4.1`).
+## Dependencies for PicoClaw | Lightweight Alternative of OpenClaw | Self Host Hosting
 
-**Q: The gateway isn't starting. What should I check?**
+* GitHub repository (Picoclaw template)
+* Railway account
+* Provider API key (e.g., OpenAI)
+* At least one messaging channel integration
 
-A: Make sure at least one provider has an API key configured. The gateway auto-starts only when an API key is present. You can also manually start it from the Status tab.
+### Deployment Dependencies
+
+* Environment variables configured in Railway
+* Provider credentials
+* Channel credentials (Telegram bot token, Discord webhook, etc.)
+---
+
+## Pricing & System Requirements 💰
+
+### Railway Hosting Cost
+
+Railway pricing typically works like this:
+
+* **Free tier:** Trial credits, limited CPU and RAM
+* **Hobby plan:** Around $5/month base + usage
+* **Pro plan:** Around $20/month base + usage
+
+For light usage (personal bot, small traffic), the Hobby plan is usually enough.
+
+Important:
+Your bigger cost will likely be the **model provider API usage**, not Railway hosting.
+
+### System Requirements
+
+Picoclaw itself is lightweight.
+
+For small to moderate traffic:
+
+* 1 vCPU
+* 0.5–1 GB RAM
+
+If you expect heavy traffic or many concurrent users, scale up RAM and CPU accordingly.
+
+---
+
+
+## Picoclaw vs OpenClaw ⚖️
+
+**Picoclaw**
+
+* Lightweight
+* Minimal setup
+* Backend focused
+* Easy to self-host
+
+**OpenClaw**
+
+* Broader feature set
+* More complex setup
+* Heavier resource usage
+
+If you want something simple and controllable, Picoclaw makes more sense. If you need a large ecosystem and built-in features, OpenClaw may fit better.
+
+---
+
+## FAQs ❓
+
+**Does Picoclaw have a web chat UI?**
+No. You interact through connected channels.
+
+**Do I still pay for model usage?**
+Yes. Railway hosts the backend. Your model provider charges separately.
+
+**How long does deployment take?**
+Usually a few minutes once the repo is connected.
+
+---
+
+
