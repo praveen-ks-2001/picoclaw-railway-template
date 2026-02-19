@@ -653,16 +653,6 @@
           this.saving = true;
           try {
             const payload = JSON.parse(JSON.stringify(this.config));
-
-            // Logic: If provider toggle is OFF, clear the API key in payload
-            this.providerList.forEach(p => {
-              if (!this.providerToggles[p.key]) {
-                if (payload.providers[p.key]) {
-                  payload.providers[p.key].api_key = "";
-                }
-              }
-            });
-
             payload._restartGateway = this.restartAfterSave;
             const res = await fetch('/api/config', {
               method: 'PUT',
