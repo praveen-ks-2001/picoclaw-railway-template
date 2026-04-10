@@ -1,4 +1,6 @@
-FROM golang:1.25.7-alpine AS builder
+FROM golang:1.25-alpine AS builder
+
+ENV GOTOOLCHAIN=auto
 
 RUN apk add --no-cache git make
 
